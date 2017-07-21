@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class ingame_edit : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class ingame_edit : MonoBehaviour {
 	public GameObject tutorial;
 	public float moveamt = 0.1f;
 	public float rotateamt = 0.1f;
+	string prefabname;
 	Text text1;
 	Text text2;
 	string string1;
@@ -25,20 +27,21 @@ public class ingame_edit : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		selectedname.text = selectedobj.transform.name;
+		//adds rigidbody to gameobject
 		if (Input.GetKeyDown (KeyCode.P)) {
 			Rigidbody rb = selectedobj.AddComponent<Rigidbody> () as Rigidbody;
 		}
+		//creates new prefab
 		if (Input.GetKeyDown (KeyCode.C)) {
-			
+			CreatePrefab ();
 		}
-
+		//enables ingame editor
 		if (edit == false && Input.GetKeyDown (KeyCode.T)) {
 			edit = true;
-			print ("edit is now true");
 		}
+		//All editor controls for movement and rotation
 		else if (edit == true) {
 			tutorial.SetActive (true);
-			print ("Fuck me");
 			if (Input.GetKey (KeyCode.KeypadPlus)){
 				selectedobj.transform.position = new Vector3(selectedobj.transform.position.x, selectedobj.transform.position.y+moveamt,selectedobj.transform.position.z);
 			}
@@ -72,6 +75,8 @@ public class ingame_edit : MonoBehaviour {
 			}
 		} 
 	}
+
+	//Allows player to select and spawn selected objects
 	void FixedUpdate () {
 		RaycastHit hit;
 		Vector3 position = transform.TransformDirection (Vector3.forward);
@@ -87,5 +92,11 @@ public class ingame_edit : MonoBehaviour {
 			}
 			}
 		
+	}
+
+	//Creates new prefab from selected object in editor
+	void CreatePrefab(){
+		Object newprefab = PrefabUtility.CreateEmptyPrefab ("Assets/Prefabs/" + prefabname + ".prefab");
+		PrefabUtility.ReplacePrefab (selectedobj, newprefab, ReplacePrefabOptions.ConnectToPrefab);
 	}
 }
