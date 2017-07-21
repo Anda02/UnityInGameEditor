@@ -28,6 +28,9 @@ public class ingame_edit : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.P)) {
 			Rigidbody rb = selectedobj.AddComponent<Rigidbody> () as Rigidbody;
 		}
+		if (Input.GetKeyDown (KeyCode.C)) {
+			
+		}
 
 		if (edit == false && Input.GetKeyDown (KeyCode.T)) {
 			edit = true;
